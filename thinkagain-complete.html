@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThinkAgain — A space to breathe, reflect, and grow</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage:#5a8a72;--sage-light:#8ab5a0;--sage-pale:#e8f2ec;--sage-ultra:#f3f9f6;
+  --moss:#3a6654;--deep:#1a2e24;--earth:#8a6f5a;--earth-pale:#f5efe8;
+  --cream:#fdfaf6;--warm-white:#f8f5f0;--muted:#7a9489;--border:#d4e8dc;
+  --text:#1a2e24;--text-mid:#3a6654;--text-soft:#6a8a7a;
+  --terra:#4a8c6f;--terra-soft:#7ab99a;--terra-pale:#ddeee6;--mid:#3a6652;
+  --card:#f9fdfb;--bg:#f2f6f3;--shadow:0 4px 32px rgba(18,37,28,0.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(253,250,246,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,232,220,0.5);transition:all 0.3s}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--deep);text-decoration:none}
+.nav-logo span{color:var(--sage);font-style:italic}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--text-soft);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--sage)}
+.nav-cta{background:var(--sage)!important;color:white!important;padding:9px 22px;border-radius:50px;font-weight:500!important;cursor:pointer;border:none;font-family:'Outfit',sans-serif;font-size:0.9rem;transition:all 0.2s}
+.nav-cta:hover{background:var(--moss)!important;transform:translateY(-1px)}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--deep);margin:5px 0;border-radius:2px}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:var(--cream);flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 24px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--deep);text-decoration:none}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(90,138,114,0.1) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 90%,rgba(138,111,90,0.07) 0%,transparent 55%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--sage-pale);border:1px solid var(--border);color:var(--sage);font-size:0.82rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:8px 20px;border-radius:50px;margin-bottom:28px;position:relative;z-index:1;animation:fadeUp 0.8s ease both}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sage)}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:700;line-height:1.12;color:var(--deep);max-width:820px;position:relative;z-index:1;animation:fadeUp 0.8s 0.1s ease both;letter-spacing:-1px}
+.hero h1 em{font-style:italic;color:var(--sage)}
+.hero-sub{font-size:1.1rem;color:var(--text-soft);line-height:1.7;max-width:520px;margin:24px auto 40px;position:relative;z-index:1;animation:fadeUp 0.8s 0.2s ease both}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;animation:fadeUp 0.8s 0.3s ease both}
+.btn-primary{background:var(--sage);color:white;border:none;padding:15px 36px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:0.97rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(90,138,114,0.3);transition:all 0.25s}
+.btn-primary:hover{background:var(--moss);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--text-mid);border:1.5px solid var(--border);padding:14px 32px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:0.97rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);transform:translateY(-2px)}
+.hero-trust{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:52px;position:relative;z-index:1;animation:fadeUp 0.8s 0.45s ease both}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:0.83rem;color:var(--text-soft);font-weight:500}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--sage-light);flex-shrink:0}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:0.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;z-index:1}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--sage-light),transparent);animation:scrollPulse 2s infinite}
+section{padding:96px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{display:inline-flex;align-items:center;gap:8px;color:var(--sage);font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
+.section-label::before{content:'';width:20px;height:1px;background:var(--sage)}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:700;color:var(--deep);line-height:1.2;letter-spacing:-0.5px;margin-bottom:16px}
+.section-title em{color:var(--sage);font-style:italic}
+.section-sub{font-size:1rem;color:var(--text-soft);line-height:1.7;max-width:560px}
+#awareness{background:var(--warm-white)}
+.awareness-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:48px}
+.awareness-card{background:var(--cream);border:1px solid var(--border);border-radius:24px;padding:28px 26px;transition:all 0.28s;position:relative;overflow:hidden}
+.awareness-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--sage),var(--sage-light));transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.awareness-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(90,138,114,0.12)}
+.awareness-card:hover::before{transform:scaleX(1)}
+.aw-icon{font-size:2rem;margin-bottom:14px}
+.aw-tag{display:inline-block;background:var(--sage-pale);color:var(--sage);font-size:0.72rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:4px 12px;border-radius:50px;margin-bottom:12px}
+.aw-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:var(--deep);margin-bottom:10px;line-height:1.3}
+.aw-body{font-size:0.88rem;color:var(--text-soft);line-height:1.65}
+.aw-expand{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-size:0.85rem;color:var(--text-soft);line-height:1.6;display:none}
+.aw-read-more{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--sage);font-size:0.85rem;font-weight:600;cursor:pointer;border:none;background:none;font-family:'Outfit',sans-serif}
+.aw-card-featured{grid-column:span 3;background:linear-gradient(135deg,var(--deep) 0%,var(--moss) 100%);border:none;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.aw-card-featured .aw-tag{background:rgba(255,255,255,0.15);color:white}
+.aw-card-featured .aw-title{font-size:1.5rem;color:white}
+.aw-card-featured .aw-body{color:rgba(255,255,255,0.75);font-size:0.92rem}
+.featured-signs{display:flex;flex-direction:column;gap:10px}
+.sign-item{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px 16px;font-size:0.87rem;color:rgba(255,255,255,0.85);line-height:1.4}
+.sign-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:0.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#stories{background:var(--sage-ultra)}
+.stories-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:start;margin-top:48px}
+.stories-intro{position:sticky;top:100px}
+.stories-intro p{font-size:0.95rem;color:var(--text-soft);line-height:1.75;margin-bottom:20px}
+.privacy-badge{background:var(--deep);color:white;border-radius:20px;padding:20px 22px;margin-top:24px}
+.privacy-badge h4{font-size:0.88rem;font-weight:600;margin-bottom:12px;opacity:0.6;letter-spacing:0.8px;text-transform:uppercase}
+.pr-rows{display:flex;flex-direction:column;gap:10px}
+.pr-item{display:flex;gap:10px;align-items:center;font-size:0.85rem;line-height:1.4}
+.pr-dot{width:6px;height:6px;border-radius:50%;background:var(--sage-light);flex-shrink:0}
+.stories-right{display:flex;flex-direction:column;gap:20px}
+.story-form-card{background:var(--cream);border:1px solid var(--border);border-radius:24px;padding:30px 28px}
+.form-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:var(--deep);margin-bottom:6px}
+.form-sub{font-size:0.85rem;color:var(--text-soft);margin-bottom:22px;line-height:1.5}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:0.83rem;font-weight:600;color:var(--text-mid);margin-bottom:6px}
+.form-field select,.form-field textarea{width:100%;background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:11px 14px;font-family:'Outfit',sans-serif;font-size:0.9rem;color:var(--deep);outline:none;transition:border-color 0.2s;resize:none}
+.form-field select:focus,.form-field textarea:focus{border-color:var(--sage-light)}
+.form-field textarea{min-height:120px;line-height:1.6}
+.form-field select{appearance:none;cursor:pointer}
+.char-count{font-size:0.75rem;color:var(--muted);text-align:right;margin-top:4px}
+.form-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:4px}
+.anon-note{font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.story-card{background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:24px 26px;transition:all 0.25s}
+.story-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(90,138,114,0.1)}
+.story-meta{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.story-tag{background:var(--sage-pale);color:var(--sage);font-size:0.73rem;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;padding:4px 12px;border-radius:50px}
+.story-when{font-size:0.78rem;color:var(--muted)}
+.story-anon{font-size:0.78rem;color:var(--muted);margin-left:auto}
+.story-text{font-family:'Playfair Display',serif;font-size:1.02rem;line-height:1.72;color:var(--text);font-style:italic}
+.story-reactions{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap}
+.react-btn{background:var(--warm-white);border:1px solid var(--border);border-radius:50px;padding:6px 14px;font-size:0.82rem;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--text-soft);transition:all 0.2s;display:flex;align-items:center;gap:5px}
+.react-btn:hover,.react-btn.active{background:var(--sage-pale);border-color:var(--sage);color:var(--sage)}
+#faq{background:var(--warm-white)}
+.faq-layout{display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:start;margin-top:48px}
+.faq-cats{display:flex;flex-direction:column;gap:8px;position:sticky;top:100px}
+.faq-cat-btn{display:flex;align-items:center;gap:12px;background:transparent;border:1px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:500;color:var(--text-soft);text-align:left;transition:all 0.22s}
+.faq-cat-btn.active,.faq-cat-btn:hover{background:var(--sage-pale);border-color:var(--sage-light);color:var(--sage)}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 4px;cursor:pointer;font-size:0.97rem;font-weight:500;color:var(--deep);gap:16px;transition:color 0.2s}
+.faq-q:hover{color:var(--sage)}
+.faq-chevron{width:22px;height:22px;border-radius:50%;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s}
+.faq-chevron svg{width:10px;height:10px;fill:none;stroke:var(--sage);stroke-width:2.5;transition:transform 0.3s}
+.faq-item.open .faq-chevron{background:var(--sage)}
+.faq-item.open .faq-chevron svg{stroke:white;transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.9rem;color:var(--text-soft);line-height:1.72;padding:0 4px}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:20px}
+#portal{background:var(--cream)}
+.portal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.portal-card{border-radius:20px;padding:24px;border:1px solid var(--border);transition:all 0.25s;text-decoration:none;display:block;position:relative;overflow:hidden}
+.portal-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(90,138,114,0.12)}
+.pc-cream{background:var(--cream)}.pc-sage{background:var(--sage-pale);border-color:var(--sage-light)}
+.pc-earth{background:var(--earth-pale);border-color:#d4c4b8}
+.pc-dark{background:var(--deep);border-color:var(--deep)}
+.pc-dark .pc-label{color:rgba(255,255,255,0.5)}.pc-dark .pc-title{color:white}.pc-dark .pc-desc{color:rgba(255,255,255,0.65)}
+.portal-card.wide{grid-column:span 2}
+.pc-icon{font-size:2rem;margin-bottom:14px;display:block}
+.pc-label{font-size:0.73rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--sage);margin-bottom:8px}
+.pc-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--deep);margin-bottom:8px;line-height:1.3}
+.pc-desc{font-size:0.84rem;color:var(--text-soft);line-height:1.55}
+#tools{background:var(--sage-ultra)}
+.tools-banner{background:linear-gradient(135deg,var(--deep),var(--moss));border-radius:28px;padding:56px 48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;margin-top:48px;position:relative;overflow:hidden}
+.tools-text h3{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:white;margin-bottom:10px;line-height:1.2}
+.tools-text p{font-size:0.95rem;color:rgba(255,255,255,0.7);line-height:1.65;max-width:480px;margin-bottom:24px}
+.tools-preview{display:flex;gap:10px;flex-wrap:wrap}
+.tool-chip{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:8px 18px;border-radius:50px;font-size:0.83rem;font-weight:500;display:flex;align-items:center;gap:6px}
+.notify-form{display:flex;flex-direction:column;gap:10px;min-width:260px}
+.notify-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:13px 18px;font-family:'Outfit',sans-serif;font-size:0.9rem;color:white;outline:none;width:100%}
+.notify-input::placeholder{color:rgba(255,255,255,0.4)}
+.btn-white{background:white;color:var(--deep);border:none;padding:13px 24px;border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%;text-align:center}
+footer{background:var(--deep);color:white;padding:60px 24px 40px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:32px}
+.footer-brand h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:10px}
+.footer-brand h3 span{color:var(--sage-light);font-style:italic}
+.footer-brand p{font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.65;max-width:260px}
+.footer-col h4{font-size:0.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color 0.2s;cursor:pointer}
+.footer-links a:hover{color:var(--sage-light)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:0.8rem;color:rgba(255,255,255,0.35)}
+.crisis-bar{background:rgba(90,138,114,0.15);border:1px solid rgba(90,138,114,0.25);border-radius:10px;padding:10px 16px;font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:20px}
+.crisis-bar strong{color:var(--sage-light)}
+/* CHAT OVERLAY */
+.chat-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(18,37,28,0.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity 0.4s;padding:20px}
+.chat-overlay.open{opacity:1;pointer-events:all}
+.chat-modal{width:100%;max-width:640px;height:90vh;max-height:750px;background:var(--bg);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.3);transform:scale(0.95) translateY(20px);transition:transform 0.4s;position:relative}
+.chat-overlay.open .chat-modal{transform:scale(1) translateY(0)}
+.cscreen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity 0.5s,transform 0.5s;background:var(--bg)}
+.cscreen.out{opacity:0;pointer-events:none;transform:translateY(16px)}
+.cscreen.gone{display:none!important}
+.entry-card{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:36px 40px 32px;max-width:500px;width:100%;box-shadow:var(--shadow);text-align:center}
+.logo-mark{width:56px;height:56px;margin:0 auto 20px}
+.logo-mark svg{width:100%;height:100%}
+.cbrand{font-family:'Lora',serif;font-size:2rem;font-weight:600;color:var(--deep);letter-spacing:-0.5px;margin-bottom:4px}
+.cbrand span{color:var(--terra)}
+.ctagline{font-family:'Lora',serif;font-style:italic;color:var(--muted);font-size:0.95rem;margin-bottom:28px}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.path-card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:16px 14px;cursor:pointer;text-align:left;transition:all 0.22s}
+.path-card:hover{border-color:var(--terra-soft);transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,140,111,0.13)}
+.path-icon{font-size:1.3rem;margin-bottom:6px}
+.path-title{font-size:0.85rem;font-weight:500;color:var(--deep);margin-bottom:2px}
+.path-desc{font-size:0.74rem;color:var(--muted);line-height:1.4}
+.privacy-strip{display:flex;align-items:center;gap:8px;justify-content:center;font-size:0.76rem;color:var(--muted);padding-top:6px;flex-wrap:wrap}
+.pdot{width:4px;height:4px;border-radius:50%;background:var(--terra-soft)}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px 38px;max-width:480px;width:100%;box-shadow:var(--shadow)}
+.pcard h2{font-family:'Lora',serif;font-size:1.4rem;margin-bottom:6px;color:var(--deep)}
+.psub{font-size:0.86rem;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.privacy-rows{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.prow{display:flex;gap:12px;align-items:flex-start;font-size:0.86rem;color:var(--mid);line-height:1.5}
+.pi{width:26px;height:26px;border-radius:8px;background:var(--terra-pale);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.escape-note{background:var(--terra-pale);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--mid);margin-bottom:18px;line-height:1.5}
+.cbtn{width:100%;background:linear-gradient(135deg,var(--terra),#35705a);color:white;border:none;padding:14px 32px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;box-shadow:0 4px 20px rgba(74,140,111,0.28);transition:transform 0.2s,box-shadow 0.2s}
+.cbtn:hover{transform:translateY(-2px)}
+#cchat-screen{padding:0;align-items:stretch;justify-content:stretch;flex-direction:column}
+.chat-top{background:var(--card);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-brand-wrap{display:flex;align-items:center;gap:10px}
+.chat-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--terra),var(--terra-soft));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px}
+.chat-brand-name{font-family:'Lora',serif;font-size:0.95rem;font-weight:600;color:var(--deep)}
+.chat-brand-sub{font-size:0.72rem;color:var(--muted)}
+.exit-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.exit-btn:hover{background:var(--terra);color:white;border-color:var(--terra)}
+.messages{flex:1;overflow-y:auto;padding:20px 20px 8px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.msg{display:flex;gap:10px;animation:fadeUp 0.38s ease both}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;max-width:80%}
+.msg.ai{align-self:flex-start;max-width:84%}
+.mavatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:3px}
+.ai .mavatar{background:linear-gradient(135deg,var(--terra),var(--terra-soft))}
+.user .mavatar{background:var(--deep);color:#fff;font-size:9px;font-weight:500}
+.bubble{padding:12px 16px;border-radius:18px;font-size:0.91rem;line-height:1.65}
+.ai .bubble{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:5px;color:var(--deep)}
+.user .bubble{background:var(--deep);color:#fff;border-bottom-right-radius:5px}
+.typing-wrap{display:flex;gap:10px;align-self:flex-start}
+.typing-ind{display:flex;gap:5px;align-items:center;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:18px;border-bottom-left-radius:5px}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--terra-soft);animation:bounce 1.1s infinite}
+.tdot:nth-child(2){animation-delay:.18s}.tdot:nth-child(3){animation-delay:.36s}
+.chips-area{padding:4px 20px 8px;display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:var(--card);border:1.5px solid var(--border);color:var(--mid);padding:8px 16px;border-radius:50px;font-size:0.83rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;animation:fadeUp 0.35s ease both}
+.chip:hover{background:var(--terra);color:#fff;border-color:var(--terra)}
+.input-row{background:var(--card);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+.chat-textarea{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--deep);resize:none;max-height:100px;line-height:1.5;outline:none;transition:border-color 0.2s}
+.chat-textarea:focus{border-color:var(--terra-soft)}
+.chat-textarea::placeholder{color:var(--muted)}
+.send-btn{width:40px;height:40px;background:linear-gradient(135deg,var(--terra),#35705a);border:none;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;box-shadow:0 3px 12px rgba(74,140,111,0.3)}
+.send-btn:hover{transform:scale(1.08)}
+.send-btn svg{width:16px;height:16px;fill:white}
+.messages::-webkit-scrollbar{width:3px}.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--deep);color:white;border-radius:14px;padding:14px 20px;font-size:0.9rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);display:flex;align-items:center;gap:10px;transform:translateY(20px);opacity:0;transition:all 0.35s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+@keyframes scrollPulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  nav{padding:0 24px}.nav-links{display:none}.nav-toggle{display:block}
+  .awareness-grid{grid-template-columns:1fr 1fr}.aw-card-featured{grid-column:span 2;grid-template-columns:1fr;gap:20px}
+  .stories-layout{grid-template-columns:1fr}.stories-intro{position:static}
+  .faq-layout{grid-template-columns:1fr}.faq-cats{flex-direction:row;flex-wrap:wrap;position:static}.faq-cat-btn{padding:10px 14px;font-size:0.82rem}
+  .portal-grid{grid-template-columns:1fr 1fr}.portal-card.wide{grid-column:span 2}
+  .tools-banner{grid-template-columns:1fr;padding:36px 28px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+  .chat-modal{max-width:100%;height:100vh;max-height:100vh;border-radius:0}
+}
+@media(max-width:600px){
+  section{padding:72px 20px}
+  .awareness-grid{grid-template-columns:1fr}.aw-card-featured{grid-column:span 1}
+  .portal-grid{grid-template-columns:1fr}.portal-card.wide{grid-column:span 1}
+  .footer-top{grid-template-columns:1fr;gap:24px}
+  .paths{grid-template-columns:1fr}.entry-card{padding:28px 22px}.pcard{padding:28px 22px}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">Think<span>Again</span></a>
+  <ul class="nav-links">
+    <li><a href="#awareness">Awareness</a></li>
+    <li><a href="#stories">Stories</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#portal">Resources</a></li>
+    <li><button class="nav-cta" onclick="openChat()">Start Chatting</button></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#awareness" class="mobile-link">Awareness</a>
+  <a href="#stories" class="mobile-link">Stories</a>
+  <a href="#faq" class="mobile-link">FAQ</a>
+  <a href="#portal" class="mobile-link">Resources</a>
+  <button class="btn-primary" onclick="openChat();document.getElementById('mobile-menu').classList.remove('open')">Start Chatting</button>
+</div>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">A safe space to reflect</div>
+  <h1>Some things deserve a<br><em>second look.</em></h1>
+  <p class="hero-sub">A judgment-free space to explore your relationships, share your story, and understand what healthy looks and feels like.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="openChat()">Talk it through <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    <a href="#awareness" class="btn-ghost">Learn more</a>
+  </div>
+  <div class="hero-trust">
+    <div class="trust-item"><div class="trust-dot"></div><span>100% anonymous</span></div>
+    <div class="trust-item"><div class="trust-dot"></div><span>Nothing is ever saved</span></div>
+    <div class="trust-item"><div class="trust-dot"></div><span>No account needed</span></div>
+    <div class="trust-item"><div class="trust-dot"></div><span>Always free</span></div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>scroll</span></div>
+</section>
+
+<section id="awareness">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Awareness hub</div>
+      <h2 class="section-title">Understanding what <em>healthy</em> looks like</h2>
+      <p class="section-sub">Knowledge is the first step. These short reads help you identify patterns, name feelings, and start making sense of your experiences.</p>
+    </div>
+    <div class="awareness-grid">
+      <div class="aw-card-featured awareness-card reveal">
+        <div>
+          <div class="aw-tag">⭐ Start here</div>
+          <h3 class="aw-title">5 signs a relationship might not be as healthy as it feels</h3>
+          <p class="aw-body">Sometimes things feel fine because we have adapted to them. These signs are not accusations — they are gentle nudges to pay attention.</p>
+        </div>
+        <div class="featured-signs">
+          <div class="sign-item"><div class="sign-num">1</div>You often feel confused after a conversation that started simply.</div>
+          <div class="sign-item"><div class="sign-num">2</div>You change your behaviour to avoid a bad reaction from them.</div>
+          <div class="sign-item"><div class="sign-num">3</div>Apologies come, but the same things keep happening.</div>
+          <div class="sign-item"><div class="sign-num">4</div>You feel worse about yourself than before this relationship.</div>
+          <div class="sign-item"><div class="sign-num">5</div>Your feelings are regularly dismissed or minimised.</div>
+        </div>
+      </div>
+      <div class="awareness-card reveal">
+        <div class="aw-icon">🔄</div><div class="aw-tag">Patterns</div>
+        <h3 class="aw-title">What is the cycle of tension and repair?</h3>
+        <p class="aw-body">Many harmful dynamics have a recognisable rhythm — tension builds, something happens, there is a honeymoon period, and it starts again.</p>
+        <div class="aw-expand" id="expand-1">The repair phase can feel so good — loving, full of remorse — that it resets your sense of reality. Recognising the cycle is not about blame; it is about seeing the full picture.</div>
+        <button class="aw-read-more" onclick="toggleExpand('expand-1',this)">Read more →</button>
+      </div>
+      <div class="awareness-card reveal">
+        <div class="aw-icon">🧠</div><div class="aw-tag">Emotional</div>
+        <h3 class="aw-title">Why it is hard to trust your own memory</h3>
+        <p class="aw-body">When someone consistently questions your recollection of events, it can slowly make you doubt your own mind. This is not your fault.</p>
+        <div class="aw-expand" id="expand-2">This experience can leave you feeling foggy and reliant on the other person to tell you what happened. Keeping a private journal can help you reconnect with your own account of things.</div>
+        <button class="aw-read-more" onclick="toggleExpand('expand-2',this)">Read more →</button>
+      </div>
+      <div class="awareness-card reveal">
+        <div class="aw-icon">🤝</div><div class="aw-tag">What healthy looks like</div>
+        <h3 class="aw-title">Disagreements in a healthy relationship</h3>
+        <p class="aw-body">Conflict is normal — all couples and families argue. The difference is in how it happens and how it ends.</p>
+        <div class="aw-expand" id="expand-3">In a healthy disagreement, both people feel heard even if they do not agree. Neither person uses silence as punishment or brings up unrelated past mistakes.</div>
+        <button class="aw-read-more" onclick="toggleExpand('expand-3',this)">Read more →</button>
+      </div>
+      <div class="awareness-card reveal">
+        <div class="aw-icon">🌱</div><div class="aw-tag">Growth</div>
+        <h3 class="aw-title">Understanding your own patterns</h3>
+        <p class="aw-body">Sometimes the most useful thing is to look at the role we play — not with blame, but with curiosity.</p>
+        <div class="aw-expand" id="expand-4">People often develop protective patterns in childhood that no longer serve them in adult relationships — things like people-pleasing or emotional shutdown. Recognising these with compassion is the beginning of real change.</div>
+        <button class="aw-read-more" onclick="toggleExpand('expand-4',this)">Read more →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stories">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Anonymous stories</div>
+      <h2 class="section-title">You are not <em>alone</em> in this</h2>
+    </div>
+    <div class="stories-layout">
+      <div class="stories-intro reveal">
+        <p>Real experiences from real people — shared anonymously because sometimes knowing someone else has felt exactly this way is enough to make you feel less alone.</p>
+        <p>All stories are submitted anonymously, moderated with care, and shared here to build understanding — not judgment.</p>
+        <div class="privacy-badge">
+          <h4>Privacy Promise</h4>
+          <div class="pr-rows">
+            <div class="pr-item"><div class="pr-dot"></div><span>No names, no emails, no tracking</span></div>
+            <div class="pr-item"><div class="pr-dot"></div><span>Stories reviewed before publishing</span></div>
+            <div class="pr-item"><div class="pr-dot"></div><span>Judgment will not be published</span></div>
+            <div class="pr-item"><div class="pr-dot"></div><span>You can request removal anytime</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="stories-right">
+        <div class="story-form-card reveal">
+          <h3 class="form-title">Share your story</h3>
+          <p class="form-sub">Your words might be exactly what someone else needs to read today.</p>
+          <div class="form-field">
+            <label>What is this about?</label>
+            <select id="story-category">
+              <option value="">Choose a topic...</option>
+              <option>A relationship that felt off</option>
+              <option>Understanding myself better</option>
+              <option>Supporting someone I love</option>
+              <option>A turning point or realisation</option>
+              <option>Recovery and growth</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Your story</label>
+            <textarea id="story-text" placeholder="Share what happened, how it felt, or what you learned. There is no wrong way to tell it." maxlength="600"></textarea>
+            <div class="char-count"><span id="char-count">0</span>/600</div>
+          </div>
+          <div class="form-footer">
+            <span class="anon-note">🔒 Completely anonymous</span>
+            <button class="btn-primary" onclick="submitStory()" style="padding:11px 28px;font-size:0.9rem;">Submit story</button>
+          </div>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-meta"><span class="story-tag">Turning point</span><span class="story-when">2 days ago</span><span class="story-anon">🔒 Anonymous</span></div>
+          <p class="story-text">"I kept making excuses for why I always felt so tired after spending time with them. Realising it was not me being 'too sensitive' — that was the moment everything shifted."</p>
+          <div class="story-reactions">
+            <button class="react-btn" onclick="react(this)">🤍 Me too <span>47</span></button>
+            <button class="react-btn" onclick="react(this)">💚 Thank you <span>31</span></button>
+            <button class="react-btn" onclick="react(this)">🕊 Sending love <span>18</span></button>
+          </div>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-meta"><span class="story-tag">Recovery</span><span class="story-when">5 days ago</span><span class="story-anon">🔒 Anonymous</span></div>
+          <p class="story-text">"The silence used to last for days and I would spend all of that time going over what I had done wrong. Looking back, I can see that I had done nothing wrong at all."</p>
+          <div class="story-reactions">
+            <button class="react-btn" onclick="react(this)">🤍 Me too <span>83</span></button>
+            <button class="react-btn" onclick="react(this)">💚 Thank you <span>52</span></button>
+            <button class="react-btn" onclick="react(this)">🕊 Sending love <span>29</span></button>
+          </div>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-meta"><span class="story-tag">Understanding myself</span><span class="story-when">1 week ago</span><span class="story-anon">🔒 Anonymous</span></div>
+          <p class="story-text">"I thought my anger was the problem. When I dug deeper, it was just the way hurt had been coming out because I never felt safe enough to just say 'that hurt me'."</p>
+          <div class="story-reactions">
+            <button class="react-btn" onclick="react(this)">🤍 Me too <span>64</span></button>
+            <button class="react-btn" onclick="react(this)">💚 Thank you <span>40</span></button>
+            <button class="react-btn" onclick="react(this)">🕊 Sending love <span>22</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Questions people are <em>afraid</em> to ask</h2>
+      <p class="section-sub">No question is too small or too embarrassing. These are the ones we hear most often.</p>
+    </div>
+    <div class="faq-layout reveal">
+      <div class="faq-cats">
+        <button class="faq-cat-btn active" onclick="filterFaq('all',this)"><span>🌿</span> All questions</button>
+        <button class="faq-cat-btn" onclick="filterFaq('relationships',this)"><span>💛</span> Relationships</button>
+        <button class="faq-cat-btn" onclick="filterFaq('myself',this)"><span>🪞</span> About myself</button>
+        <button class="faq-cat-btn" onclick="filterFaq('someone',this)"><span>🤝</span> Someone I know</button>
+        <button class="faq-cat-btn" onclick="filterFaq('help',this)"><span>🆘</span> Getting help</button>
+      </div>
+      <div class="faq-list" id="faq-list">
+        <div class="faq-item" data-cat="relationships">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Is it normal to feel more anxious around someone you love?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">Love can sometimes feel complicated, but ongoing anxiety around a specific person — especially about how they will react — is worth paying attention to. Feeling relaxed and safe with someone you love is not an unrealistic expectation.</div>
+        </div>
+        <div class="faq-item" data-cat="relationships">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>What if they are kind most of the time?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">The good times are real — and they make everything else more confusing. The question is not whether someone is kind sometimes, but whether the unkind moments are causing you real pain and whether the pattern is changing over time.</div>
+        </div>
+        <div class="faq-item" data-cat="myself">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>What if I am the one causing harm?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">Asking this question already says something important about you. The fact that you are asking means you are doing something many people cannot. Speaking to a counsellor is one of the most courageous things you can do.</div>
+        </div>
+        <div class="faq-item" data-cat="myself">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Why do I keep going back even when I know it is not right?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">This is incredibly common and has nothing to do with weakness. Attachment, hope, fear, and neurological patterns can all make leaving feel impossible. Please do not judge yourself. Reaching out — like you are doing now — is already part of the process.</div>
+        </div>
+        <div class="faq-item" data-cat="someone">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>My friend will not listen to me. What do I do?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">People often need to reach their own conclusions in their own time. The most powerful thing you can do is stay present and let them know you are there without judgment — no matter what they decide.</div>
+        </div>
+        <div class="faq-item" data-cat="someone">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>How do I talk to someone without making them defensive?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">Lead with curiosity instead of conclusions. Instead of "I think your partner is controlling", try "I have noticed you seem stressed — how are you feeling?" Sharing observations about how your friend seems tends to open conversations rather than close them.</div>
+        </div>
+        <div class="faq-item" data-cat="help">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Is ThinkAgain a crisis service?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">No — ThinkAgain is a reflection and awareness tool, not a clinical or crisis service. If you or someone you know is in immediate danger, please contact emergency services. The Resources section has links to trained helplines.</div>
+        </div>
+        <div class="faq-item" data-cat="help">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>When should I speak to a professional?</span><div class="faq-chevron"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke-linecap="round"/></svg></div></div>
+          <div class="faq-a">Any time you feel ready — you do not need to be in crisis to benefit from talking to a counsellor. If you are feeling consistently anxious, confused, or unsafe in a relationship, these are all good reasons to reach out.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="portal">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Resource portal</div>
+      <h2 class="section-title">Find the right <em>support</em></h2>
+      <p class="section-sub">Whether you need to talk to someone right now, find local services, or just keep learning — here is where to go next.</p>
+    </div>
+    <div class="portal-grid">
+      <div class="portal-card pc-sage wide reveal">
+        <span class="pc-icon">📞</span>
+        <div class="pc-label">Crisis & immediate support</div>
+        <div class="pc-title">Free helplines, available now</div>
+        <div class="pc-desc">Trained listeners, available 24/7. No referral needed, completely confidential. Includes domestic abuse, mental health, and general crisis lines across the UK, US, and Australia.</div>
+      </div>
+      <div class="portal-card pc-dark reveal">
+        <span class="pc-icon">🗺️</span>
+        <div class="pc-label">Local services</div>
+        <div class="pc-title">Find support near you</div>
+        <div class="pc-desc">Enter your postcode or city to find local counselling, shelters, and legal advice.</div>
+      </div>
+      <div class="portal-card pc-cream reveal" onclick="openChat()" style="cursor:pointer;">
+        <span class="pc-icon">💬</span>
+        <div class="pc-label">AI support</div>
+        <div class="pc-title">Talk it through with ThinkAgain</div>
+        <div class="pc-desc">Our anonymous chatbot helps you explore feelings, name patterns, and think things through at your own pace.</div>
+      </div>
+      <div class="portal-card pc-earth reveal">
+        <span class="pc-icon">📚</span>
+        <div class="pc-label">Reading & learning</div>
+        <div class="pc-title">Books, guides & further reading</div>
+        <div class="pc-desc">A curated list of books, podcasts, and websites — organised by topic and reading level.</div>
+      </div>
+      <div class="portal-card pc-cream reveal">
+        <span class="pc-icon">⚖️</span>
+        <div class="pc-label">Legal & practical</div>
+        <div class="pc-title">Know your rights</div>
+        <div class="pc-desc">Plain-language guides to restraining orders, housing rights, financial independence, and legal protection.</div>
+      </div>
+      <div class="portal-card pc-sage reveal">
+        <span class="pc-icon">👨‍👩‍👧</span>
+        <div class="pc-label">For supporters</div>
+        <div class="pc-title">Helping someone you love</div>
+        <div class="pc-desc">Guides for friends and family — how to talk to someone, how to stay present, and how to look after yourself too.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Coming next</div>
+      <h2 class="section-title">Calming tools &amp; <em>situation games</em></h2>
+    </div>
+    <div class="tools-banner reveal">
+      <div class="tools-text">
+        <h3>What would you do<br>in this situation?</h3>
+        <p>Interactive scenario tools, breathing exercises, and calming spaces are coming to ThinkAgain. Designed for when you are overwhelmed, unsure, or just need a moment to breathe.</p>
+        <div class="tools-preview">
+          <div class="tool-chip">🎯 Scenario games</div>
+          <div class="tool-chip">🌬 Breathing tools</div>
+          <div class="tool-chip">🧘 Calming space</div>
+          <div class="tool-chip">🪞 Reflection prompts</div>
+        </div>
+      </div>
+      <div class="notify-form">
+        <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;">Get notified when it launches:</p>
+        <input type="email" class="notify-input" placeholder="your@email.com" id="notify-email">
+        <button class="btn-white" onclick="notifyMe()">Notify me</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Think<span>Again</span></h3>
+        <p>A free, anonymous space for reflection, awareness, and finding your way back to yourself.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="#awareness">Awareness hub</a></li>
+          <li><a href="#stories">Anonymous stories</a></li>
+          <li><a onclick="openChat()">AI chatbot</a></li>
+          <li><a href="#tools">Coming soon</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul class="footer-links">
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#portal">Resource portal</a></li>
+          <li><a href="#portal">Crisis lines</a></li>
+          <li><a href="#portal">Find local help</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul class="footer-links">
+          <li><a href="#">Our mission</a></li>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Content guidelines</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="crisis-bar"><strong>⚡ In immediate danger?</strong> Please contact emergency services — 999 (UK) · 911 (US) · 000 (Australia) — or the National Domestic Abuse Helpline: <strong>0808 2000 247</strong> (UK, free, 24/7).</div>
+    <div class="footer-bottom">
+      <p>© 2025 ThinkAgain · A reflection and awareness tool, not a clinical service.</p>
+      <p>Made with care. No data collected. No judgment, ever.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT OVERLAY -->
+<div class="chat-overlay" id="chat-overlay" onclick="handleOverlayClick(event)">
+  <div class="chat-modal">
+    <div class="cscreen" id="centry-screen">
+      <div class="entry-card">
+        <div class="logo-mark">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="30" fill="#ddeee6"/>
+            <path d="M20 32 A12 12 0 1 1 32 44" stroke="#4a8c6f" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <polyline points="28,40 32,44 28,48" stroke="#4a8c6f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="32" cy="29" r="3.5" fill="#4a8c6f" opacity="0.7"/>
+            <circle cx="32" cy="22" r="2" fill="#7ab99a" opacity="0.6"/>
+            <circle cx="32" cy="17" r="1.2" fill="#7ab99a" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="cbrand">Think<span>Again</span></div>
+        <div class="ctagline">Because some things deserve a second look.</div>
+        <div class="paths">
+          <div class="path-card" onclick="choosePath('off')"><div class="path-icon">💬</div><div class="path-title">Something feels off</div><div class="path-desc">A situation or pattern that did not sit right</div></div>
+          <div class="path-card" onclick="choosePath('self')"><div class="path-icon">🪞</div><div class="path-title">I want to understand myself</div><div class="path-desc">My reactions, anger, how I show up</div></div>
+          <div class="path-card" onclick="choosePath('other')"><div class="path-icon">🤝</div><div class="path-title">Someone I care about</div><div class="path-desc">I am worried about a friend or partner</div></div>
+          <div class="path-card" onclick="choosePath('learn')"><div class="path-icon">🌱</div><div class="path-title">Just here to learn</div><div class="path-desc">Curious about healthy relationships</div></div>
+        </div>
+        <div class="privacy-strip">
+          <span>🔒 Nothing is saved</span><div class="pdot"></div>
+          <span>No account needed</span><div class="pdot"></div>
+          <span>Always confidential</span>
+        </div>
+      </div>
+    </div>
+    <div class="cscreen out gone" id="cprivacy-screen">
+      <div class="pcard">
+        <h2>Before we begin 🌿</h2>
+        <p class="psub">A few things we want you to know so you feel completely safe here.</p>
+        <div class="privacy-rows">
+          <div class="prow"><div class="pi">🔒</div><div><strong>Nothing is saved.</strong> This conversation only exists in your browser. Close and it is gone.</div></div>
+          <div class="prow"><div class="pi">🙈</div><div><strong>Fully anonymous.</strong> No name, no email, no account.</div></div>
+          <div class="prow"><div class="pi">💬</div><div><strong>Not therapy.</strong> ThinkAgain is a reflection tool, not a clinical service.</div></div>
+          <div class="prow"><div class="pi">🚪</div><div><strong>Leave anytime.</strong> Click Close or press Escape.</div></div>
+          <div class="prow"><div class="pi">💚</div><div><strong>No judgment.</strong> You will be met with warmth, always.</div></div>
+        </div>
+        <div class="escape-note">⚡ <strong>Quick tip:</strong> Press <strong>Escape</strong> at any time to close instantly.</div>
+        <button class="cbtn" onclick="startChat()">I understand, I am ready</button>
+      </div>
+    </div>
+    <div class="cscreen out gone" id="cchat-screen">
+      <div class="chat-top">
+        <div class="chat-brand-wrap">
+          <div class="chat-logo">🌿</div>
+          <div><div class="chat-brand-name">ThinkAgain</div><div class="chat-brand-sub">Here with you, take your time</div></div>
+        </div>
+        <button class="exit-btn" onclick="closeChat()">Close ✕</button>
+      </div>
+      <div class="messages" id="cmessages"></div>
+      <div class="chips-area" id="cchips-area"></div>
+      <div class="input-row">
+        <textarea class="chat-textarea" id="cuser-input" placeholder="Type here, or choose an option above..." rows="1"></textarea>
+        <button class="send-btn" id="csend-btn"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-icon">✅</span><span id="toast-msg">Done!</span></div>
+
+<script>
+"use strict";
+
+// ============================================================
+// PASTE YOUR ANTHROPIC API KEY HERE
+// Get it from: console.anthropic.com -> API Keys
+// ============================================================
+var API_KEY = "PASTE_YOUR_API_KEY_HERE";
+
+var chatHistory=[],busy=false,pathData=null;
+var PATHS={
+  off:{firstMsg:"I am really glad you are here.\n\nSometimes something happens — a moment, a conversation, a feeling after a message is sent — and you just cannot shake it. Even if you cannot name it yet.\n\nTell me, what has been sitting with you lately? It can be something small.",chips:["A specific thing that happened recently","A pattern I keep noticing","A feeling I cannot explain","I am not sure where to start"]},
+  self:{firstMsg:"That takes real courage — choosing to look inward.\n\nSome of the most meaningful change starts exactly here, with that kind of honesty.\n\nHow are you feeling about yourself in your relationship right now? Be as honest as you want to be.",chips:["I react in ways I do not like","I get angry and do not know why","I think I might be hurting someone","I want to be better but do not know how"]},
+  other:{firstMsg:"It says a lot about you that you are here for someone else.\n\nWatching someone you love go through something difficult — especially when you cannot quite name what is wrong — can feel really isolating.\n\nWhat has been worrying you about them?",chips:["They seem unhappy but will not talk","I have noticed things that concern me","Their partner worries me","I want to support but do not know how"]},
+  learn:{firstMsg:"Love that you are here just to learn — that is already a form of care.\n\nImagine this: After an argument, one partner goes completely silent for days — no explanation, no response. The other is left feeling confused and like they did something terribly wrong.\n\nWhat does that feel like to you — normal conflict, or something else?",chips:["That sounds like normal behaviour","Something about it feels off","I have experienced something like this","I honestly do not know"]}
+};
+var SYSTEM_PROMPT="You are ThinkAgain, a warm, calm, deeply empathetic AI guide helping people understand their relationships and emotional wellbeing. You speak like a caring, wise friend. You are NOT a therapist.\n\nCORE RULES:\n- NEVER use labels like abuser, victim, narcissist, toxic. Say: this pattern, this dynamic, this feeling.\n- SHORT responses only. Max 3 to 4 sentences, then a question.\n- Move SLOWLY. One question, one thread at a time.\n- Use the person's own words back to them.\n- Never diagnose. If something serious emerges, gently suggest a counsellor can help.\n- Always warm, never clinical. No bullet points. Conversational prose only.\n\nWhen it would help to offer response options, end your message with exactly this format:\n[CHIPS: option 1 | option 2 | option 3]\nKeep chips short, 5 words max each.";
+
+function openChat(){document.getElementById("chat-overlay").classList.add("open");document.body.style.overflow="hidden";showCScreen("centry-screen");chatHistory=[];pathData=null;document.getElementById("cmessages").innerHTML="";document.getElementById("cchips-area").innerHTML="";}
+function closeChat(){document.getElementById("chat-overlay").classList.remove("open");document.body.style.overflow="";}
+function handleOverlayClick(e){if(e.target===document.getElementById("chat-overlay"))closeChat();}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeChat();});
+function showCScreen(id){document.querySelectorAll(".cscreen").forEach(function(s){if(s.id!==id){s.classList.add("out");setTimeout(function(){s.classList.add("gone");},550);}});var t=document.getElementById(id);t.classList.remove("gone");setTimeout(function(){t.classList.remove("out");},20);}
+function choosePath(key){pathData=PATHS[key];showCScreen("cprivacy-screen");}
+function startChat(){showCScreen("cchat-screen");setTimeout(function(){showTyping(function(){appendMsg("ai",pathData.firstMsg);chatHistory.push({role:"assistant",content:pathData.firstMsg});if(pathData.chips)showChips(pathData.chips);});},400);}
+function appendMsg(role,text){var msgs=document.getElementById("cmessages");var wrap=document.createElement("div");wrap.className="msg "+role;var av=document.createElement("div");av.className="mavatar";av.textContent=role==="ai"?"🌿":"You";var bub=document.createElement("div");bub.className="bubble";bub.innerHTML=text.replace(/\n/g,"<br>");wrap.appendChild(av);wrap.appendChild(bub);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;}
+function showTyping(callback){var msgs=document.getElementById("cmessages");var wrap=document.createElement("div");wrap.className="typing-wrap";wrap.id="ctyping-indicator";var av=document.createElement("div");av.className="mavatar";av.style.cssText="background:linear-gradient(135deg,#4a8c6f,#7ab99a)";av.textContent="🌿";var ind=document.createElement("div");ind.className="typing-ind";ind.innerHTML="<div class='tdot'></div><div class='tdot'></div><div class='tdot'></div>";wrap.appendChild(av);wrap.appendChild(ind);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;setTimeout(function(){var el=document.getElementById("ctyping-indicator");if(el)el.remove();callback();},1400+Math.random()*1000);}
+function showChips(options){var area=document.getElementById("cchips-area");area.innerHTML="";options.forEach(function(opt,i){var c=document.createElement("button");c.className="chip";c.textContent=opt;c.style.animationDelay=(i*0.07)+"s";c.addEventListener("click",function(){area.innerHTML="";handleUser(opt);});area.appendChild(c);});}
+function callAPI(userMsg,callback){chatHistory.push({role:"user",content:userMsg});fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":API_KEY,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system:SYSTEM_PROMPT,messages:chatHistory})}).then(function(r){return r.json();}).then(function(data){var text=(data.content&&data.content[0]&&data.content[0].text)||"I am here with you. Take your time.";var chips=[];var m=text.match(/\[CHIPS:\s*([^\]]+)\]/);if(m){chips=m[1].split("|").map(function(s){return s.trim();}).filter(Boolean);text=text.replace(/\[CHIPS:[^\]]+\]/,"").trim();}chatHistory.push({role:"assistant",content:text});callback(text,chips);}).catch(function(){callback("I am here with you. Take your time whenever you are ready.",[]);});}
+function handleUser(text){if(busy||!text.trim())return;busy=true;document.getElementById("cchips-area").innerHTML="";appendMsg("user",text);showTyping(function(){callAPI(text,function(reply,chips){appendMsg("ai",reply);if(chips&&chips.length)showChips(chips);busy=false;});});}
+document.getElementById("csend-btn").addEventListener("click",function(){var inp=document.getElementById("cuser-input");var t=inp.value.trim();if(!t||busy)return;inp.value="";inp.style.height="auto";handleUser(t);});
+document.getElementById("cuser-input").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();document.getElementById("csend-btn").click();}});
+document.getElementById("cuser-input").addEventListener("input",function(){this.style.height="auto";this.style.height=Math.min(this.scrollHeight,100)+"px";});
+
+window.addEventListener("scroll",function(){document.getElementById("navbar").style.boxShadow=window.scrollY>30?"0 2px 20px rgba(26,46,36,0.08)":"none";});
+document.getElementById("nav-toggle").addEventListener("click",function(){document.getElementById("mobile-menu").classList.toggle("open");});
+document.querySelectorAll(".mobile-link").forEach(function(l){l.addEventListener("click",function(){document.getElementById("mobile-menu").classList.remove("open");});});
+var revealObs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add("visible");revealObs.unobserve(entry.target);}});},{threshold:0.1,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".reveal").forEach(function(el){revealObs.observe(el);});
+function toggleFaq(el){var item=el.parentElement;var isOpen=item.classList.contains("open");document.querySelectorAll(".faq-item.open").forEach(function(i){i.classList.remove("open");});if(!isOpen)item.classList.add("open");}
+function filterFaq(cat,btn){document.querySelectorAll(".faq-cat-btn").forEach(function(b){b.classList.remove("active");});btn.classList.add("active");document.querySelectorAll(".faq-item").forEach(function(item){item.style.display=(cat==="all"||item.getAttribute("data-cat")===cat)?"block":"none";});}
+function toggleExpand(id,btn){var el=document.getElementById(id);var open=el.style.display==="block";el.style.display=open?"none":"block";btn.textContent=open?"Read more →":"Read less ↑";}
+document.getElementById("story-text").addEventListener("input",function(){document.getElementById("char-count").textContent=this.value.length;});
+function submitStory(){var cat=document.getElementById("story-category").value;var text=document.getElementById("story-text").value.trim();if(!cat){showToast("Please choose a topic first","⚠️");return;}if(text.length<30){showToast("Please write a little more — at least 30 characters","✏️");return;}document.getElementById("story-category").value="";document.getElementById("story-text").value="";document.getElementById("char-count").textContent="0";showToast("Thank you — your story has been submitted for review 💚","🌿");}
+function react(btn){btn.classList.toggle("active");var parts=btn.innerHTML.split("<span>");var num=parseInt(parts[1].split("<")[0]);var change=btn.classList.contains("active")?1:-1;btn.innerHTML=parts[0]+"<span>"+(num+change)+"</span>";}
+function notifyMe(){var email=document.getElementById("notify-email").value.trim();if(!email||!email.includes("@")){showToast("Please enter a valid email","⚠️");return;}document.getElementById("notify-email").value="";showToast("You are on the list! We will let you know when tools launch 🌱","✅");}
+function showToast(msg,icon){var t=document.getElementById("toast");document.getElementById("toast-msg").textContent=msg;document.getElementById("toast-icon").textContent=icon||"✅";t.classList.add("show");setTimeout(function(){t.classList.remove("show");},3800);}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener("click",function(e){var target=document.querySelector(this.getAttribute("href"));if(target){e.preventDefault();target.scrollIntoView({behavior:"smooth"});}});});
+</script>
+</body>
+</html>
